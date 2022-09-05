@@ -93,6 +93,14 @@ This is used in conjunction with `ibuffer-sidebar-toggle-sidebar'."
   :type 'boolean
   :group 'ibuffer-sidebar)
 
+(defcustom ibuffer-sidebar-no-other-window nil
+  "Whether or not to add `no-other-window' parameter to window.
+
+If this is ture, ibuffer-sidebar would not be presented when switch
+windows."
+  :type 'boolean
+  :group 'ibuffer-sidebar)
+
 (defcustom ibuffer-sidebar-use-custom-font nil
   "Show `ibuffer-sidebar' with custom font.
 
@@ -238,6 +246,8 @@ to disable automatic refresh when a special command is triggered."
     (let ((window (get-buffer-window buffer)))
       (set-window-dedicated-p window t)
       (set-window-parameter window 'no-delete-other-windows t)
+      (when ibuffer-sidebar-no-other-window
+	(set-window-parameter window 'no-other-window t))
       (with-selected-window window
         (let ((window-size-fixed))
           (ibuffer-sidebar-set-width ibuffer-sidebar-width))))
